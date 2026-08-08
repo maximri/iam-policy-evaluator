@@ -1,0 +1,45 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowGeneralReadOnly",
+      "Effect": "Allow",
+      "Action": ["s3:Get*", "s3:List*", "ec2:Describe*", "rds:Describe*"],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AllowDevBucketWrite",
+      "Effect": "Allow",
+      "Action": ["s3:PutObject", "s3:DeleteObject"],
+      "Resource": "arn:aws:s3:::dev-team-sandbox/*"
+    },
+    {
+      "Sid": "DenyProductionS3Access",
+      "Effect": "Deny",
+      "Action": "s3:*",
+      "Resource": [
+        "arn:aws:s3:::prod-customer-data",
+        "arn:aws:s3:::prod-customer-data/*",
+        "arn:aws:s3:::act-security-crown-jewels/*"
+      ]
+    },
+    {
+      "Sid": "AllowCloudWatchLogs",
+      "Effect": "Allow",
+      "Action": "logs:*",
+      "Resource": "*"
+    },
+    {
+      "Sid": "DenyLogDeletion",
+      "Effect": "Deny",
+      "Action": ["logs:DeleteLogGroup", "logs:DeleteLogStream", "logs:DeleteRetentionPolicy"],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AllowDevIAMKeyManagement",
+      "Effect": "Allow",
+      "Action": ["iam:CreateAccessKey", "iam:DeleteAccessKey", "iam:ListAccessKeys"],
+      "Resource": "arn:aws:iam::123456789012:user/dev-*"
+    }
+  ]
+}
